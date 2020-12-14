@@ -23,4 +23,10 @@ async def auth_user(user_in: UserIn):
         return {"Autenticado": False}
     return {"Autenticado": True}
 
-    
+@api.get("/user/balance/{username}")
+async def get_balance(username: str):
+    user_in_db = get_user(username)
+    if user_in_db == None:
+        raise HTTPException(status_code = 404, detail = "El usuario no existe.")
+    user_out = UserOut(**user_in_db.dict())
+    return user_out
