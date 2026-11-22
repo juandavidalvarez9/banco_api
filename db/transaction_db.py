@@ -1,10 +1,10 @@
-from datetime import datetime
-from pydantic import BaseModel
+from datetime import datetime, timezone
+from pydantic import BaseModel, Field
 
 class TransactionInDB(BaseModel):
     id_transaction: int = 0
     username: str
-    date: datetime = datetime.now()
+    date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     value: int
     actual_balance: int
 
