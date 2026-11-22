@@ -44,5 +44,6 @@ async def make_transaction(transaction_in: TransactionIn):
     update_user(user_in_db)
 
     transaction_in_db = TransactionInDB(**transaction_in.model_dump(), actual_balance = user_in_db.balance)
+    transaction_in_db = save_transaction(transaction_in_db)
     transaction_out = TransactionOut(**transaction_in_db.model_dump())
     return transaction_out
