@@ -54,3 +54,11 @@ def test_retiro_sin_valor_se_rechaza(client):
     respuesta = client.put("/user/transaction/", json={"username": "camilo24"})
 
     assert respuesta.status_code == 422
+
+
+def test_retiro_mayor_al_saldo_responde_400(client):
+    respuesta = retirar(client, 10**9)
+
+    assert respuesta.status_code == 400
+    assert respuesta.json() == {"detail": "Sin fondos suficientes."}
+    assert saldo(client) == 120000

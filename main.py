@@ -38,7 +38,7 @@ async def make_transaction(transaction_in: TransactionIn):
     if user_in_db == None:
         raise HTTPException(status_code = 404, detail = "El usuario no existe.")
     if user_in_db.balance < transaction_in.value:
-        raise HTTPException(status_code = 404, detail = "Sin fondos suficientes.")
+        raise HTTPException(status_code = 400, detail = "Sin fondos suficientes.")
 
     user_in_db.balance = user_in_db.balance - transaction_in.value
     update_user(user_in_db)
