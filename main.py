@@ -9,9 +9,28 @@ from models.user_models import UserIn, UserOut
 from models.transaction_models import TransactionIn, TransactionOut
 
 import datetime
+import os
+
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 api = FastAPI()
+
+# Orígenes (separados por comas) desde los que un navegador puede llamar la API.
+ORIGENES_PERMITIDOS = [
+    origen.strip()
+    for origen in os.environ.get(
+        "ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    if origen.strip()
+]
+
+api.add_middleware(
+    CORSMiddleware,
+    allow_origins=ORIGENES_PERMITIDOS,
+    allow_methods=["GET", "POST", "PUT"],
+    allow_headers=["Content-Type"],
+)
 
 @api.post("/user/auth/")
 async def auth_user(user_in: UserIn):
