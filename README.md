@@ -1,6 +1,6 @@
 # banco_api
 
-> **Estado:** proyecto de 2020, sin mantenimiento. Se conserva como archivo.
+> Proyecto de 2020.
 
 API de ejemplo de un banco, hecha con FastAPI. Usa una base de datos ficticia en memoria (los usuarios y saldos son datos de prueba y se reinician al reiniciar el servidor).
 
