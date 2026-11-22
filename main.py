@@ -27,7 +27,7 @@ async def get_balance(username: str):
     user_in_db = get_user(username)
     if user_in_db == None:
         raise HTTPException(status_code = 404, detail = "El usuario no existe.")
-    user_out = UserOut(**user_in_db.dict())
+    user_out = UserOut(**user_in_db.model_dump())
     return user_out
 
 @api.put("/user/transaction/")
@@ -43,6 +43,6 @@ async def make_transaction(transaction_in: TransactionIn):
     user_in_db.balance = user_in_db.balance - transaction_in.value
     update_user(user_in_db)
 
-    transaction_in_db = TransactionInDB(**transaction_in.dict(), actual_balance = user_in_db.balance)
-    transaction_out = TransactionOut(**transaction_in_db.dict())
+    transaction_in_db = TransactionInDB(**transaction_in.model_dump(), actual_balance = user_in_db.balance)
+    transaction_out = TransactionOut(**transaction_in_db.model_dump())
     return transaction_out
