@@ -33,3 +33,24 @@ def test_cada_transaccion_tiene_su_propia_fecha():
 
     assert segunda.date > primera.date
     assert primera.date.tzinfo is not None
+
+
+def test_retiro_negativo_se_rechaza(client):
+    respuesta = retirar(client, -500)
+
+    assert respuesta.status_code == 422
+    assert saldo(client) == 120000
+
+
+def test_retiro_de_cero_se_rechaza(client):
+    assert retirar(client, 0).status_code == 422
+
+
+def test_retiro_no_numerico_se_rechaza(client):
+    assert retirar(client, "abc").status_code == 422
+
+
+def test_retiro_sin_valor_se_rechaza(client):
+    respuesta = client.put("/user/transaction/", json={"username": "camilo24"})
+
+    assert respuesta.status_code == 422
